@@ -45,6 +45,14 @@ function shell(active, focus) {
 }
 const pageHead = (title, right, backHref) => `<header class="ph">${backHref ? `<a class="iconbtn" href="${backHref}" aria-label="${esc(t('back'))}">${icon('back')}</a>` : ''}<h1>${esc(title)}</h1><div class="row">${right || ''}</div></header>`;
 
+/* ---------- install banner ---------- */
+function installBanner() {
+  if (isStandalone() || UI.hideInstall) return '';
+  if (installEvt) return `<div class="install"><img src="icons/icon.svg" alt="" width="52" height="52"><div class="grow"><b>${esc(t('install'))}: Clavuno</b><span>${esc(t('offline'))}</span></div><button class="btn primary big" data-act="install">${icon('dl')}<span>${esc(t('install'))}</span></button><button class="iconbtn" data-act="installHide" aria-label="${esc(t('close'))}">${icon('x')}</button></div>`;
+  if (_isIos()) return `<div class="install"><img src="icons/icon.svg" alt="" width="52" height="52"><div class="grow"><b>${esc(t('install'))}: Clavuno</b><span>${icon('share')} ${esc(t('installIos'))}</span></div><button class="iconbtn" data-act="installHide" aria-label="${esc(t('close'))}">${icon('x')}</button></div>`;
+  return '';
+}
+
 /* ---------- home ---------- */
 function todayItems() {
   const out = [], td = today();
@@ -62,7 +70,7 @@ function vHome() {
   const kpi = (label, val, cls, href) => `<a class="kpi ${cls || ''}" href="${href}"><span>${esc(label)}</span><b>${esc(money(roundC(val, cur), cur))}</b></a>`;
   const recent = [...S.quotes.map(q => ({ d: q, k: 'quotes' })), ...S.invoices.map(i => ({ d: i, k: 'invoices' }))].sort((a, b) => (a.d.date < b.d.date ? 1 : a.d.date > b.d.date ? -1 : 0)).slice(0, 5);
   return pageHead(S.settings.biz.name || 'Clavuno', `<a class="btn primary" href="#/quotes/new">${icon('plus')}<span>${esc(t('newQuote'))}</span></a>`) +
-    (hasDemo() ? `<div class="banner"><span>${esc(t('demoBanner'))}</span><button class="btn sm" data-act="demoRemove">${esc(t('demoRemove'))}</button></div>` : '') +
+    installBanner() + (hasDemo() ? `<div class="banner"><span>${esc(t('demoBanner'))}</span><button class="btn sm" data-act="demoRemove">${esc(t('demoRemove'))}</button></div>` : '') +
     `<section class="kpis">${kpi(t('toCollect'), toCollect, '', '#/receivables')}${kpi(t('overdue'), over, over > 0 ? 'bad' : '', '#/receivables')}${kpi(t('openQuotes'), open, '', '#/quotes')}${kpi(t('collectedMonth'), collected, 'ok', '#/invoices')}</section>` +
     (fresh ? `<section class="card"><h2>${esc(t('firstSteps'))}</h2><ol class="steps"><li><button class="linkish" data-act="newClient">${esc(t('step1'))}</button></li><li><a href="#/catalog">${esc(t('step2'))}</a></li><li><a href="#/quotes/new">${esc(t('step3'))}</a></li></ol><button class="btn" data-act="demoLoad">${esc(t('tryDemo'))}</button></section>` : '') +
     `<section class="card"><h2>${esc(t('forToday'))}${items.length ? ` <span class="count">${items.length}</span>` : ''}</h2>${items.length ? `<ul class="list">${items.map(x => `<li class="li"><a class="grow" href="${x.href}"><b>${esc(x.title)}</b><span>${esc(x.sub)}</span><span class="pill ${x.cls}">${esc(x.tag)}</span></a><button class="btn sm wa" data-act="sendOpen" data-kind="${x.k === 'follow' ? 'quote' : 'invoice'}" data-id="${x.id}" data-mode="${x.k}">${icon('chat')}<span>${esc(t(x.k === 'follow' ? 'followUp' : 'remind'))}</span></button></li>`).join('')}</ul>` : `<p class="muted">${esc(t('nothingToday'))}</p>`}</section>` +
@@ -206,16 +214,17 @@ function vSettings() {
   <section class="card"><h2>${esc(t('numbering'))}</h2><div class="grid2">${field(t('qPrefix'), si('qPrefix', s.qPrefix, 'maxlength="10"'))}${field(t('nextNum'), si('qNext', s.qNext, 'type="number" inputmode="numeric" min="1"'))}${field(t('iPrefix'), si('iPrefix', s.iPrefix, 'maxlength="10"'))}${field(t('nextNum'), si('iNext', s.iNext, 'type="number" inputmode="numeric" min="1"'))}</div></section>
   <section class="card"><h2>${esc(t('appearance'))}</h2><div class="chips">${[['auto', 'thAuto'], ['light', 'thLight'], ['dark', 'thDark']].map(x => `<button class="chip ${s.theme === x[0] ? 'on' : ''}" data-act="setTheme" data-v="${x[0]}">${esc(t(x[1]))}</button>`).join('')}</div><h2>${esc(t('notifications'))}</h2><label class="ck"><input type="checkbox" data-in="notify" ${s.notify ? 'checked' : ''}><span>${esc(t('notifyOn'))}</span></label></section>
   <section class="card"><h2>${esc(t('backup'))}</h2><p class="muted">${esc(t('backupHint'))}</p><div class="row"><button class="btn" data-act="exportData">${icon('dl')}<span>${esc(t('exportData'))}</span></button><label class="btn"><input type="file" accept="application/json,.json" data-in="import" hidden><span>${esc(t('importData'))}</span></label></div><div class="row"><button class="btn" data-act="${hasDemo() ? 'demoRemove' : 'demoLoad'}">${esc(t(hasDemo() ? 'demoRemove' : 'demoLoad'))}</button><button class="btn ghost" data-act="askWipe">${esc(t('wipe'))}</button></div></section>
-  ${installEvt ? `<section class="card"><button class="btn primary" data-act="install">${icon('dl')}<span>${esc(t('install'))}</span></button></section>` : isIos() && !isStandalone() ? `<section class="card"><p class="muted">${esc(t('installIos'))}</p></section>` : ''}<p class="foot">Clavuno · Arthur Labs</p>`;
+  ${installEvt ? `<section class="card"><button class="btn primary" data-act="install">${icon('dl')}<span>${esc(t('install'))}</span></button></section>` : _isIos() && !isStandalone() ? `<section class="card"><p class="muted">${esc(t('installIos'))}</p></section>` : ''}<p class="foot">Clavuno · Arthur Labs</p>`;
 }
-const isIos = () => /iphone|ipad|ipod/i.test(navigator.userAgent), isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+function _isIos() { return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
+const isIosOld = () => /iphone|ipad|ipod/i.test(navigator.userAgent), isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 function vMore() { return pageHead(t('more')) + `<ul class="list card">${['catalog', 'receivables', 'settings'].map(n => `<li class="li"><a class="grow rowlink" href="#/${n}">${icon(n)}<b>${esc(t(n))}</b></a>${icon('chev')}</li>`).join('')}</ul>${installEvt ? `<button class="btn primary" data-act="install">${icon('dl')}<span>${esc(t('install'))}</span></button>` : ''}`; }
 
 /* ---------- welcome ---------- */
 function vWelcome() {
   const lg = S.settings.lang || detectLang(), reg = detectRegion(), R = (reg && REGIONS[reg]) || ['USD', '', 0, ''];
   const cur = S.settings._wc || R[0];
-  return `<div class="welcome"><img src="icons/icon.svg" alt="" width="64" height="64"><h1>${esc(t('welcomeTitle'))}</h1><p>${esc(t('welcomeSub'))}</p><div class="chips" role="group" aria-label="${esc(t('language'))}">${LANGS.map(l => `<button class="chip ${l[0] === lg ? 'on' : ''}" data-act="welcomeLang" data-v="${l[0]}" lang="${l[0]}">${esc(l[1])}</button>`).join('')}</div>
+  return `<div class="welcome"><img src="icons/icon.svg" alt="" width="64" height="64"><h1>${esc(t('welcomeTitle'))}</h1><p>${esc(t('welcomeSub'))}</p>${installBanner()}<div class="chips" role="group" aria-label="${esc(t('language'))}">${LANGS.map(l => `<button class="chip ${l[0] === lg ? 'on' : ''}" data-act="welcomeLang" data-v="${l[0]}" lang="${l[0]}">${esc(l[1])}</button>`).join('')}</div>
   <form data-form="welcome" novalidate class="card">${field(t('bizName'), inp('biz', S.settings.biz.name, 'maxlength="80" autocomplete="organization"'))}<div class="grid2">${field(t('currency'), `<select name="currency">${CURRENCIES.map(c => `<option ${c === cur ? 'selected' : ''}>${c}</option>`).join('')}</select>`)}${field(t('dial'), inp('dial', R[3], 'inputmode="numeric" maxlength="4"'))}${field(t('taxName'), inp('taxName', R[1], `maxlength="20" placeholder="${esc(t('taxNamePh'))}"`))}${field(t('taxPct'), inp('taxRate', R[2], 'type="number" inputmode="decimal" min="0" max="100" step="any"'))}</div><input type="hidden" name="region" value="${reg || ''}"><button class="btn primary big" type="submit">${esc(t('start'))}</button><button class="btn" type="submit" name="demo" value="1">${esc(t('tryDemo'))}</button></form><small>${esc(t('backupHint'))}</small></div>`;
 }
 
@@ -284,6 +293,7 @@ function demoRemove() { const used = new Set([...S.quotes, ...S.invoices].filter
 /* ---------- actions ---------- */
 const ACT = {
   closeModal, demoLoad, demoRemove,
+  installHide() { UI.hideInstall = true; render(); },
   filter(el) { UI[el.dataset.k] = el.dataset.v; render(); },
   install() { if (installEvt) { installEvt.prompt(); installEvt.userChoice.finally(() => { installEvt = null; render(); }); } },
   newClient(el) { openModal(clientForm(null, el.dataset.from)); },
@@ -381,7 +391,7 @@ document.addEventListener('change', ev => {
   if (el.dataset.in === 'import') { const file = el.files && el.files[0]; if (!file) return; if (file.size > 20e6) return toast(t('importErr'), 'err'); file.text().then(txt => { const d = JSON.parse(txt); if (!d || typeof d !== 'object' || typeof d.settings !== 'object' || !Array.isArray(d.clients) || !Array.isArray(d.quotes)) throw new Error('shape'); const n = sanitize(d); n.settings.onboarded = true; if (!n.settings.lang) n.settings.lang = lang(); ACT._pending = n; confirmBox(t('importWarn'), t('importData'), 'doImport', true); }).catch(() => toast(t('importErr'), 'err')); el.value = ''; }
 });
 window.addEventListener('storage', ev => { if (ev.key !== LS_KEY) return; S = loadState(); for (const k in _nf) delete _nf[k]; if (!ED && $('#modal').hidden) render(); }); // another tab changed the data
-window.addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); installEvt = ev; if (S.settings.onboarded) render(); });
+window.addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); installEvt = ev; if (S.settings.onboarded ? !ED && $('#modal').hidden : !document.activeElement || document.activeElement.tagName !== 'INPUT') render(); });
 window.addEventListener('appinstalled', () => { installEvt = null; if (S.settings.onboarded) render(); });
 
 /* ---------- alerts ---------- */

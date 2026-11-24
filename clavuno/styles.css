@@ -220,3 +220,11 @@ form{display:flex;flex-direction:column;gap:.75rem}
 .li{flex-wrap:wrap}
 .amt{max-width:none}
 .ln-nums{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr) auto}
+
+.install{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;padding:.9rem 1rem;border-radius:16px;background:var(--surface);border:2px solid var(--brand);box-shadow:var(--shadow);text-align:left;width:100%}
+.install img{border-radius:12px;flex:none}
+.install .grow{display:flex;flex-direction:column;gap:.15rem}
+.install .grow b{font:700 1.05rem var(--display)}
+.install .grow span{color:var(--muted);font-size:.88rem}
+.install .grow .ic{width:16px;height:16px;vertical-align:-3px;color:var(--brand)}
+.install .btn.big{flex:1 1 100%;order:3}
