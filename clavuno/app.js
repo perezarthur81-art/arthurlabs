@@ -38,12 +38,27 @@ function applyTheme() { const th = S.settings.theme; if (th === 'auto') document
 /* ---------- shell ---------- */
 function shell(active, focus) {
   const link = n => `<a href="#/${n === 'home' ? '' : n}" class="${n === active ? 'on' : ''}"${n === active ? ' aria-current="page"' : ''}>${icon(n)}<span>${esc(t(n))}</span></a>`;
-  $('#side').innerHTML = `<a class="brand" href="#/"><img src="icons/icon.svg" alt="" width="34" height="34"><b>Clavuno</b></a><nav>${NAV.map(link).join('')}</nav>${installEvt ? `<button class="btn primary" data-act="install">${icon('dl')}${esc(t('install'))}</button>` : ''}<small>${esc(t('offline'))}</small>`;
+  $('#side').innerHTML = `<a class="brand" href="#/"><img src="icons/icon.svg" alt="" width="34" height="34"><b>Clavuno</b></a><nav>${NAV.map(link).join('')}</nav>${gated() && !licensed() ? `<a class="btn primary" href="#/pro">Clavuno Pro</a>` : ''}${installEvt ? `<button class="btn primary" data-act="install">${icon('dl')}${esc(t('install'))}</button>` : ''}<small>${esc(t('offline'))}</small>`;
   const tabActive = TABS.includes(active) ? active : 'more';
   $('#tabs').innerHTML = TABS.map(n => `<a href="#/${n === 'home' ? '' : n}" class="${n === tabActive ? 'on' : ''}">${icon(n)}<span>${esc(t(n))}</span></a>`).join('');
   document.body.classList.toggle('focus', !!focus);
 }
 const pageHead = (title, right, backHref) => `<header class="ph">${backHref ? `<a class="iconbtn" href="${backHref}" aria-label="${esc(t('back'))}">${icon('back')}</a>` : ''}<h1>${esc(title)}</h1><div class="row">${right || ''}</div></header>`;
+
+/* ---------- Pro ---------- */
+const maskKey = k => (k ? k.slice(0, 12) + '-••••-••••-' + k.slice(-4) : '');
+const proBenefits = () => `<ul class="benefits">${['proB1', 'proB2', 'proB3'].map(k => `<li>${icon('check')}<span>${esc(t(k))}</span></li>`).join('')}</ul>`;
+const buyBtn = () => (gated() ? `<button class="btn primary big" data-act="buyPro">${esc(t('buyPro', { price: CFG.PRICE }))}</button>` : '');
+const planUse = () => t('planUse', { a: realClients(), c: CFG.FREE_CLIENTS, b: realDocs(), d: CFG.FREE_DOCS });
+function vPro() {
+  if (licensed()) return pageHead('Clavuno Pro', pill('ok', 'Pro'), '#/settings') + `<section class="card pro"><p><b>${esc(t('licActive'))}</b></p><p class="muted keytx">${esc(maskKey(S.plan.license))}</p>${proBenefits()}<div class="row"><button class="btn ghost" data-act="licRemoveAsk">${esc(t('licRemove'))}</button></div></section>`;
+  return pageHead('Clavuno Pro', '', '#/settings') + `<section class="card pro"><h2>${esc(t('proTitle'))}</h2><p class="muted">${esc(t('proSub'))}</p>${proBenefits()}<p class="muted">${esc(t('proFree', { c: CFG.FREE_CLIENTS, d: CFG.FREE_DOCS }))}<br>${esc(planUse())}</p>${buyBtn()}</section><section class="card"><h2>${esc(t('haveKey'))}</h2><form data-form="license" novalidate>${field(t('licKey'), '<input name="key" autocapitalize="characters" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="60" placeholder="CLAVUNO-XXXX-XXXX-XXXX-XXXX">', t('keyByEmail'))}<button class="btn primary" type="submit">${esc(t('activate'))}</button></form></section>`;
+}
+function proOpen(why) {
+  const msg = why === 'clients' ? t('limitClients', { n: CFG.FREE_CLIENTS }) : why === 'docs' ? t('limitDocs', { n: CFG.FREE_DOCS }) : why === 'logo' ? t('logoPro') : '';
+  openModal(`<h2>${esc(t('proTitle'))}</h2>${msg ? `<p class="banner warn">${esc(msg)}</p>` : ''}<p class="muted">${esc(t('proSub'))}</p>${proBenefits()}<div class="stack">${buyBtn()}<a class="btn" href="#/pro">${esc(t('haveKey'))}</a><button class="btn ghost" data-act="closeModal">${esc(t('close'))}</button></div>`);
+}
+let pendingPro = null;
 
 /* ---------- install banner ---------- */
 function installBanner() {
@@ -167,6 +182,7 @@ function saveDoc() {
   if (!d.lines.length) { d.lines = [sLine({ name: '', qty: 1, price: 0 })]; $('#lines').innerHTML = edLines(); return toast(t('needLine'), 'err'); }
   const end = isQ ? 'validUntil' : 'dueDate'; if (d[end] < d.date) d[end] = d.date;
   const list = isQ ? S.quotes : S.invoices;
+  if (ED.isNew && !list.some(x => x.id === d.id) && !canAddDoc()) return proOpen('docs');
   if (ED.isNew) { const n = nextNumber(ED.kind); d.number = n.num; if (isQ) S.settings.qNext = n.next; else S.settings.iNext = n.next; list.push(d); } else { const ix = list.findIndex(x => x.id === d.id); if (ix < 0) list.push(d); else list[ix] = d; }
   if (!persist(t('saved'))) return;
   ED = null; go(`#/${isQ ? 'quotes' : 'invoices'}/${d.id}`);
@@ -207,8 +223,10 @@ function vReceivables() {
 function vSettings() {
   const s = S.settings, b = s.biz, sel = (k, opts, val) => `<select data-set="${k}">${opts.map(o => `<option value="${esc(o[0])}" ${o[0] === val ? 'selected' : ''}>${esc(o[1])}</option>`).join('')}</select>`, si = (k, val, attrs) => `<input data-set="${k}" value="${esc(val)}" ${attrs || ''}>`;
   const curs = CURRENCIES.includes(s.currency) ? CURRENCIES : [s.currency, ...CURRENCIES];
-  return pageHead(t('settings')) + `<section class="card"><h2>${esc(t('language'))}</h2><div class="chips">${LANGS.map(l => `<button class="chip ${l[0] === s.lang ? 'on' : ''}" data-act="setLang" data-v="${l[0]}" lang="${l[0]}">${esc(l[1])}</button>`).join('')}</div></section>
-  <section class="card"><h2>${esc(t('business'))}</h2>${field(t('bizName'), si('biz.name', b.name, 'maxlength="80"'))}<div class="f"><span>${esc(t('logo'))}</span><div class="row">${b.logo ? `<img src="${esc(b.logo)}" alt="" class="logo-prev">` : ''}<label class="btn"><input type="file" accept="image/png,image/jpeg,image/webp" data-in="logo" hidden><span>${esc(t('uploadLogo'))}</span></label>${b.logo ? `<button class="btn ghost" data-act="logoRemove">${esc(t('removeLogo'))}</button>` : ''}</div></div><div class="grid2">${field(t('taxId'), si('biz.taxId', b.taxId, 'maxlength="40"'))}${field(t('phone'), si('biz.phone', b.phone, 'type="tel" maxlength="30"'))}</div>${field(t('email'), si('biz.email', b.email, 'type="email" maxlength="80"'))}${field(t('address'), si('biz.address', b.address, 'maxlength="200"'))}</section>
+  const planCard = gated() || licensed() ? `<section class="card pro"><h2>Clavuno Pro</h2><p class="muted">${esc(licensed() ? t('licActive') : planUse())}</p><div class="row"><a class="btn ${licensed() ? '' : 'primary'}" href="#/pro">${esc(licensed() ? 'Clavuno Pro' : t('proTitle'))}</a></div></section>` : '';
+  const logoBtn = gated() && !licensed() ? `<button class="btn" data-act="proOpen" data-why="logo"><span>${esc(t('uploadLogo'))}</span><span class="pill warn">Pro</span></button>` : `<label class="btn"><input type="file" accept="image/png,image/jpeg,image/webp" data-in="logo" hidden><span>${esc(t('uploadLogo'))}</span></label>`;
+  return pageHead(t('settings')) + planCard + `<section class="card"><h2>${esc(t('language'))}</h2><div class="chips">${LANGS.map(l => `<button class="chip ${l[0] === s.lang ? 'on' : ''}" data-act="setLang" data-v="${l[0]}" lang="${l[0]}">${esc(l[1])}</button>`).join('')}</div></section>
+  <section class="card"><h2>${esc(t('business'))}</h2>${field(t('bizName'), si('biz.name', b.name, 'maxlength="80"'))}<div class="f"><span>${esc(t('logo'))}</span><div class="row">${b.logo ? `<img src="${esc(b.logo)}" alt="" class="logo-prev">` : ''}${logoBtn}${b.logo ? `<button class="btn ghost" data-act="logoRemove">${esc(t('removeLogo'))}</button>` : ''}</div></div><div class="grid2">${field(t('taxId'), si('biz.taxId', b.taxId, 'maxlength="40"'))}${field(t('phone'), si('biz.phone', b.phone, 'type="tel" maxlength="30"'))}</div>${field(t('email'), si('biz.email', b.email, 'type="email" maxlength="80"'))}${field(t('address'), si('biz.address', b.address, 'maxlength="200"'))}</section>
   <section class="card"><h2>${esc(t('currency'))} · ${esc(t('tax'))}</h2><div class="grid2">${field(t('currency'), sel('currency', curs.map(c => [c, c]), s.currency))}${field(t('dial'), si('dial', s.dial, 'inputmode="numeric" maxlength="4"'), t('dialHint'))}${field(t('taxName'), si('taxName', s.taxName, `maxlength="20" placeholder="${esc(t('taxNamePh'))}"`))}${field(t('taxPct'), si('taxRate', s.taxRate, 'type="number" inputmode="decimal" min="0" max="100" step="any"'))}</div></section>
   <section class="card"><h2>${esc(t('defaults'))}</h2><div class="grid2">${field(t('validDays'), si('validDays', s.validDays, 'type="number" inputmode="numeric" min="1" max="365"'))}${field(t('dueDays'), si('dueDays', s.dueDays, 'type="number" inputmode="numeric" min="0" max="365"'))}${field(t('followDays'), si('followDays', s.followDays, 'type="number" inputmode="numeric" min="1" max="60"'))}</div>${field(t('terms'), `<textarea data-set="terms" rows="2" maxlength="500" placeholder="${esc(t('termsPh'))}">${esc(s.terms)}</textarea>`)}</section>
   <section class="card"><h2>${esc(t('numbering'))}</h2><div class="grid2">${field(t('qPrefix'), si('qPrefix', s.qPrefix, 'maxlength="10"'))}${field(t('nextNum'), si('qNext', s.qNext, 'type="number" inputmode="numeric" min="1"'))}${field(t('iPrefix'), si('iPrefix', s.iPrefix, 'maxlength="10"'))}${field(t('nextNum'), si('iNext', s.iNext, 'type="number" inputmode="numeric" min="1"'))}</div></section>
@@ -218,7 +236,7 @@ function vSettings() {
 }
 function _isIos() { return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
 const isIosOld = () => /iphone|ipad|ipod/i.test(navigator.userAgent), isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-function vMore() { return pageHead(t('more')) + `<ul class="list card">${['catalog', 'receivables', 'settings'].map(n => `<li class="li"><a class="grow rowlink" href="#/${n}">${icon(n)}<b>${esc(t(n))}</b></a>${icon('chev')}</li>`).join('')}</ul>${installEvt ? `<button class="btn primary" data-act="install">${icon('dl')}<span>${esc(t('install'))}</span></button>` : ''}`; }
+function vMore() { return pageHead(t('more')) + `<ul class="list card">${['catalog', 'receivables', 'settings'].map(n => `<li class="li"><a class="grow rowlink" href="#/${n}">${icon(n)}<b>${esc(t(n))}</b></a>${icon('chev')}</li>`).join('')}${gated() || licensed() ? `<li class="li"><a class="grow rowlink" href="#/pro">${icon('check')}<b>Clavuno Pro</b></a>${icon('chev')}</li>` : ''}</ul>${installEvt ? `<button class="btn primary" data-act="install">${icon('dl')}<span>${esc(t('install'))}</span></button>` : ''}`; }
 
 /* ---------- welcome ---------- */
 function vWelcome() {
@@ -239,14 +257,16 @@ function render() {
   let html, active = sec, focus = false;
   if (sec === 'quotes' || sec === 'invoices') {
     const kind = sec === 'quotes' ? 'quote' : 'invoice';
-    if (a === 'new' || b === 'edit') { const id = a === 'new' ? null : a; if (!ED || ED.kind !== kind || (id ? ED.doc.id !== id || ED.isNew : !ED.isNew)) { if (!startEditor(kind, id, qs.get('c'))) { ED = null; return go('#/' + sec + (id ? '/' + id : '')); } } html = vEditor(); focus = true; }
+    if (a === 'new' && !canAddDoc() && !(ED && ED.isNew && ED.kind === kind)) { history.replaceState(null, '', '#/' + sec); ED = null; html = vDocs(sec); pendingPro = 'docs'; }
+    else if (a === 'new' || b === 'edit') { const id = a === 'new' ? null : a; if (!ED || ED.kind !== kind || (id ? ED.doc.id !== id || ED.isNew : !ED.isNew)) { if (!startEditor(kind, id, qs.get('c'))) { ED = null; return go('#/' + sec + (id ? '/' + id : '')); } } html = vEditor(); focus = true; }
     else { ED = null; html = a ? (kind === 'quote' ? vQuote(a) : vInvoice(a)) : vDocs(sec); }
   } else {
     ED = null;
-    html = sec === 'clients' ? (a ? vClient(a) : vClients()) : sec === 'catalog' ? vCatalog() : sec === 'receivables' ? vReceivables() : sec === 'settings' ? vSettings() : sec === 'more' ? vMore() : vHome();
-    if (!NAV.includes(sec) && sec !== 'more') active = 'home';
+    html = sec === 'clients' ? (a ? vClient(a) : vClients()) : sec === 'catalog' ? vCatalog() : sec === 'receivables' ? vReceivables() : sec === 'settings' ? vSettings() : sec === 'more' ? vMore() : sec === 'pro' ? vPro() : vHome();
+    if (sec === 'pro') active = 'settings'; else if (!NAV.includes(sec) && sec !== 'more') active = 'home';
   }
   shell(active, focus); view.innerHTML = html; badge();
+  if (pendingPro) { const w = pendingPro; pendingPro = null; proOpen(w); }
 }
 let lastSec = '';
 window.addEventListener('hashchange', () => { const sec = location.hash.split('/')[1] || ''; if (sec !== lastSec) { UI.search = ''; lastSec = sec; } closeModal(); render(); window.scrollTo(0, 0); });
@@ -293,10 +313,14 @@ function demoRemove() { const used = new Set([...S.quotes, ...S.invoices].filter
 /* ---------- actions ---------- */
 const ACT = {
   closeModal, demoLoad, demoRemove,
+  proOpen(el) { proOpen(el.dataset.why || ''); },
+  buyPro() { if (gated()) openUrl(CFG.CHECKOUT_URL); },
+  licRemoveAsk() { confirmBox(t('licRemove'), t('del'), 'licRemove', true); },
+  licRemove() { S.plan.license = null; closeModal(); persist(t('saved')); render(); },
   installHide() { UI.hideInstall = true; render(); },
   filter(el) { UI[el.dataset.k] = el.dataset.v; render(); },
   install() { if (installEvt) { installEvt.prompt(); installEvt.userChoice.finally(() => { installEvt = null; render(); }); } },
-  newClient(el) { openModal(clientForm(null, el.dataset.from)); },
+  newClient(el) { if (!canAddClient()) return proOpen('clients'); openModal(clientForm(null, el.dataset.from)); },
   editClient(el) { openModal(clientForm(findC(el.dataset.id))); },
   waClient(el) { const c = findC(el.dataset.id); if (c) openUrl('https://wa.me/' + waPhone(c.phone)); },
   newItem() { openModal(itemForm()); },
@@ -320,7 +344,7 @@ const ACT = {
     S.invoices.push(inv); S.settings.iNext = n.next; q.status = 'accepted'; q.invoiceId = inv.id; if (!q.sentAt) q.sentAt = td;
     if (persist(t('invoiceCreated'))) go('#/invoices/' + inv.id);
   },
-  duplicate(el) { const q = findQ(el.dataset.id); if (!q) return; const td = today(), n = nextNumber('quote'), c = JSON.parse(JSON.stringify(q)); Object.assign(c, { id: uid(), number: n.num, date: td, validUntil: addDays(td, S.settings.validDays), status: 'draft', sentAt: '', lastFollowAt: '', followCount: 0, invoiceId: '', demo: false }); S.quotes.push(c); S.settings.qNext = n.next; if (persist(t('saved'))) go('#/quotes/' + c.id + '/edit'); },
+  duplicate(el) { const q = findQ(el.dataset.id); if (!q) return; if (!canAddDoc()) return proOpen('docs'); const td = today(), n = nextNumber('quote'), c = JSON.parse(JSON.stringify(q)); Object.assign(c, { id: uid(), number: n.num, date: td, validUntil: addDays(td, S.settings.validDays), status: 'draft', sentAt: '', lastFollowAt: '', followCount: 0, invoiceId: '', demo: false }); S.quotes.push(c); S.settings.qNext = n.next; if (persist(t('saved'))) go('#/quotes/' + c.id + '/edit'); },
   askDelete(el) { const k = el.dataset.kind, id = el.dataset.id; if (k === 'client' && (S.quotes.some(q => q.clientId === id) || S.invoices.some(i => i.clientId === id))) return toast(t('clientHasDocs'), 'err'); openModal(`<h2>${esc(t('confirmDelete'))}</h2><div class="row end"><button class="btn" data-act="closeModal">${esc(t('cancel'))}</button><button class="btn danger" data-act="doDelete" data-kind="${esc(k)}" data-id="${esc(id)}">${esc(t('del'))}</button></div>`); },
   doDelete(el) {
     const k = el.dataset.kind, id = el.dataset.id; let to = null;
@@ -339,8 +363,8 @@ const ACT = {
   logoRemove() { S.settings.biz.logo = ''; persist(t('saved')); render(); },
   exportData() { download(new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' }), 'clavuno-' + today() + '.json'); },
   askWipe() { confirmBox(t('wipeConfirm'), t('wipe'), 'doWipe', true); },
-  doWipe() { try { localStorage.removeItem(LS_KEY); } catch (e) { /* ignore */ } S = defaults(); UI.fq = UI.fi = 'all'; UI.search = ''; closeModal(); location.hash = '#/'; render(); },
-  doImport() { if (!ACT._pending) return; S = ACT._pending; ACT._pending = null; for (const k in _nf) delete _nf[k]; closeModal(); persist(t('imported')); render(); }
+  doWipe() { try { localStorage.removeItem(LS_KEY); } catch (e) { /* ignore */ } const lic = S.plan.license; S = defaults(); if (lic) { S.plan.license = lic; save(); } UI.fq = UI.fi = 'all'; UI.search = ''; closeModal(); location.hash = '#/'; render(); },
+  doImport() { if (!ACT._pending) return; S = ACT._pending; ACT._pending = null; for (const k in _nf) delete _nf[k]; closeModal(); persist(t('imported')); render(); checkLicense().then(render); }
 };
 const FORMS = {
   welcome(f, ev) {
@@ -351,16 +375,23 @@ const FORMS = {
   client(f) {
     const name = f.name.value.trim(); if (!name) return toast(t('needName'), 'err');
     const data = { name: sStr(name, 80), company: sStr(f.company.value.trim(), 80), phone: sStr(f.phone.value.trim(), 30), email: sStr(f.email.value.trim(), 80), taxId: sStr(f.taxId.value.trim(), 40), address: sStr(f.address.value.trim(), 200), notes: sStr(f.notes.value.trim(), 1000) };
-    let c = f.id.value && findC(f.id.value); if (c) Object.assign(c, data); else { c = Object.assign({ id: uid(), created: today(), demo: false }, data); S.clients.push(c); }
+    let c = f.id.value && findC(f.id.value); if (!c && !canAddClient()) return proOpen('clients'); if (c) Object.assign(c, data); else { c = Object.assign({ id: uid(), created: today(), demo: false }, data); S.clients.push(c); }
     const from = f.from.value; closeModal(); if (!persist(t('saved'))) return; if (from === 'editor' && ED) { ED.doc.clientId = c.id; } render();
   },
   item(f) { const name = f.name.value.trim(); if (!name) return toast(t('needName'), 'err'); const data = { name: sStr(name, 160), desc: sStr(f.desc.value.trim(), 500), price: sNum(f.price.value, 0, 1e11, 0), unit: sStr(f.unit.value.trim(), 20), taxable: f.taxable.checked }; const i = f.id.value && S.items.find(x => x.id === f.id.value); if (i) Object.assign(i, data); else S.items.push(Object.assign({ id: uid(), demo: false }, data)); closeModal(); persist(t('saved')); render(); },
   pay(f) { const i = findI(f.id.value); if (!i) return; const T = totals(i), amt = roundC(sNum(f.amount.value, 0, 1e12, 0), i.currency); if (!(amt > 0)) return toast(t('badAmount'), 'err'); if (amt > T.balance) return toast(t('overpay'), 'err'); i.payments.push({ id: uid(), date: sDate(f.date.value, today()) > today() ? today() : sDate(f.date.value, today()), amount: amt, method: PAY_METHODS.includes(f.method.value) ? f.method.value : 'other', note: sStr(f.note.value.trim(), 200) }); closeModal(); persist(t('paymentSaved')); render(); },
+  async license(f) {
+    let key = null; try { key = await licVerify(f.key.value); } catch (e) { /* no crypto on this page */ }
+    if (!key) return toast(t('licBad'), 'err');
+    S.plan.license = key; if (persist(t('licOk'))) render();
+  },
   doc() { saveDoc(); }
 };
 
 /* ---------- events ---------- */
-document.addEventListener('click', ev => { const el = ev.target.closest('[data-act]'); if (el) { if (el.disabled) return; const fn = ACT[el.dataset.act]; if (typeof fn === 'function') fn(el, ev); return; } if (ev.target.id === 'modal' && downOnBackdrop) closeModal(); });
+document.addEventListener('click', ev => {
+  const nl = ev.target.closest('a[href]'); if (nl && /^#\/(quotes|invoices)\/new/.test(nl.getAttribute('href')) && !canAddDoc()) { ev.preventDefault(); return proOpen('docs'); }
+  const el = ev.target.closest('[data-act]'); if (el) { if (el.disabled) return; const fn = ACT[el.dataset.act]; if (typeof fn === 'function') fn(el, ev); return; } if (ev.target.id === 'modal' && downOnBackdrop) closeModal(); });
 let downOnBackdrop = false;
 document.addEventListener('pointerdown', ev => { downOnBackdrop = ev.target.id === 'modal'; });
 document.addEventListener('submit', ev => { const f = ev.target.closest('form[data-form]'); if (!f) return; ev.preventDefault(); const fn = FORMS[f.dataset.form]; if (fn) fn(f, ev); });
@@ -390,7 +421,7 @@ document.addEventListener('change', ev => {
   if (el.dataset.in === 'logo') { const file = el.files && el.files[0]; if (!file) return; if (!/^image\/(png|jpeg|webp)$/.test(file.type)) return toast(t('logoErr'), 'err'); const url = URL.createObjectURL(file), im = new Image(); im.onload = () => { const k = Math.min(1, 480 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(im.width * k)); c.height = Math.max(1, Math.round(im.height * k)); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url); const data = sLogo(c.toDataURL('image/png')); if (!data) return toast(t('logoErr'), 'err'); s.biz.logo = data; persist(t('saved')); render(); }; im.onerror = () => { URL.revokeObjectURL(url); toast(t('logoErr'), 'err'); }; im.src = url; return; }
   if (el.dataset.in === 'import') { const file = el.files && el.files[0]; if (!file) return; if (file.size > 20e6) return toast(t('importErr'), 'err'); file.text().then(txt => { const d = JSON.parse(txt); if (!d || typeof d !== 'object' || typeof d.settings !== 'object' || !Array.isArray(d.clients) || !Array.isArray(d.quotes)) throw new Error('shape'); const n = sanitize(d); n.settings.onboarded = true; if (!n.settings.lang) n.settings.lang = lang(); ACT._pending = n; confirmBox(t('importWarn'), t('importData'), 'doImport', true); }).catch(() => toast(t('importErr'), 'err')); el.value = ''; }
 });
-window.addEventListener('storage', ev => { if (ev.key !== LS_KEY) return; S = loadState(); for (const k in _nf) delete _nf[k]; if (!ED && $('#modal').hidden) render(); }); // another tab changed the data
+window.addEventListener('storage', ev => { if (ev.key !== LS_KEY) return; S = loadState(); for (const k in _nf) delete _nf[k]; checkLicense().then(() => { if (!ED && $('#modal').hidden) render(); }); }); // another tab changed the data
 window.addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); installEvt = ev; if (S.settings.onboarded ? !ED && $('#modal').hidden : !document.activeElement || document.activeElement.tagName !== 'INPUT') render(); });
 window.addEventListener('appinstalled', () => { installEvt = null; if (S.settings.onboarded) render(); });
 
@@ -407,4 +438,4 @@ function notifyToday() {
 /* ---------- boot ---------- */
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) { try { navigator.serviceWorker.register('sw.js'); } catch (e) { /* ignore */ } }
 lastSec = location.hash.split('/')[1] || '';
-render(); notifyToday();
+{ const boot = () => { render(); notifyToday(); }; checkLicense().then(boot, boot); }

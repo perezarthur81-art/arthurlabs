@@ -228,3 +228,12 @@ form{display:flex;flex-direction:column;gap:.75rem}
 .install .grow span{color:var(--muted);font-size:.88rem}
 .install .grow .ic{width:16px;height:16px;vertical-align:-3px;color:var(--brand)}
 .install .btn.big{flex:1 1 100%;order:3}
+
+/* Pro */
+.card.pro{border-color:var(--brand)}
+.benefits{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.benefits li{display:flex;gap:.6rem;align-items:flex-start;font-weight:500}
+.benefits .ic{color:var(--ok);margin-top:.1rem}
+.keytx{font-variant-numeric:tabular-nums;letter-spacing:.04em;overflow-wrap:anywhere}
+.sheet .banner{margin:0}
+#side a.btn{justify-content:center}

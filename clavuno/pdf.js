@@ -96,7 +96,7 @@ async function renderDocCanvases(doc, kind) {
   if (doc.notes) block(t('notes'), doc.notes);
   if (st.terms) block('', st.terms, MUTED);
 
-  pages.forEach((c, i) => { const g = c.getContext('2d'); g.textBaseline = 'alphabetic'; g.fillStyle = LINE; g.fillRect(M, H - M - 8, W - 2 * M, 1); g.font = F(400, 17); g.fillStyle = MUTED; g.textAlign = 'left'; g.fillText(t('pageOf', { n: i + 1, m: pages.length }), M, H - M + 22); g.textAlign = 'right'; g.fillText(t('madeWith'), W - M, H - M + 22); });
+  pages.forEach((c, i) => { const g = c.getContext('2d'); g.textBaseline = 'alphabetic'; g.fillStyle = LINE; g.fillRect(M, H - M - 8, W - 2 * M, 1); g.font = F(400, 17); g.fillStyle = MUTED; g.textAlign = 'left'; g.fillText(t('pageOf', { n: i + 1, m: pages.length }), M, H - M + 22); if (!licensed()) { g.textAlign = 'right'; g.fillText(t('madeWith'), W - M, H - M + 22); } });
   return pages;
 }
 
