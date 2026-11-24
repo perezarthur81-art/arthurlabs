@@ -52,7 +52,7 @@ const buyBtn = () => (gated() ? `<button class="btn primary big" data-act="buyPr
 const planUse = () => t('planUse', { a: realClients(), c: CFG.FREE_CLIENTS, b: realDocs(), d: CFG.FREE_DOCS });
 function vPro() {
   if (licensed()) return pageHead('Clavuno Pro', pill('ok', 'Pro'), '#/settings') + `<section class="card pro"><p><b>${esc(t('licActive'))}</b></p><p class="muted keytx">${esc(maskKey(S.plan.license))}</p>${proBenefits()}<div class="row"><button class="btn ghost" data-act="licRemoveAsk">${esc(t('licRemove'))}</button></div></section>`;
-  return pageHead('Clavuno Pro', '', '#/settings') + `<section class="card pro"><h2>${esc(t('proTitle'))}</h2><p class="muted">${esc(t('proSub'))}</p>${proBenefits()}<p class="muted">${esc(t('proFree', { c: CFG.FREE_CLIENTS, d: CFG.FREE_DOCS }))}<br>${esc(planUse())}</p>${buyBtn()}</section><section class="card"><h2>${esc(t('haveKey'))}</h2><form data-form="license" novalidate>${field(t('licKey'), '<input name="key" autocapitalize="characters" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="60" placeholder="CLAVUNO-XXXX-XXXX-XXXX-XXXX">', t('keyByEmail'))}<button class="btn primary" type="submit">${esc(t('activate'))}</button></form></section>`;
+  return pageHead('Clavuno Pro', '', '#/settings') + `<section class="card pro"><h2>${esc(t('proTitle'))}</h2><p class="muted">${esc(t('proSub'))}</p>${proBenefits()}${gated() ? `<p class="muted">${esc(t('proFree', { c: CFG.FREE_CLIENTS, d: CFG.FREE_DOCS }))}<br>${esc(planUse())}</p>` : ''}${buyBtn()}</section><section class="card"><h2>${esc(t('haveKey'))}</h2><form data-form="license" novalidate>${field(t('licKey'), '<input name="key" autocapitalize="characters" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="60" placeholder="CLAVUNO-XXXX-XXXX-XXXX-XXXX">', t('keyByEmail'))}<button class="btn primary" type="submit">${esc(t('activate'))}</button></form></section>`;
 }
 function proOpen(why) {
   const msg = why === 'clients' ? t('limitClients', { n: CFG.FREE_CLIENTS }) : why === 'docs' ? t('limitDocs', { n: CFG.FREE_DOCS }) : why === 'logo' ? t('logoPro') : '';
@@ -178,14 +178,18 @@ function saveDoc() {
   const d = ED.doc, isQ = ED.kind === 'quote';
   if (!findC(d.clientId)) return toast(t('needClient'), 'err');
   if (d.lines.some(l => !l.name.trim() && (l.price > 0 || l.desc.trim()))) return toast(t('needLine'), 'err');
-  d.lines = d.lines.filter(l => l.name.trim()).map(sLine); d.demo = false;
+  d.lines = d.lines.filter(l => l.name.trim()).map(sLine);
   if (!d.lines.length) { d.lines = [sLine({ name: '', qty: 1, price: 0 })]; $('#lines').innerHTML = edLines(); return toast(t('needLine'), 'err'); }
   const end = isQ ? 'validUntil' : 'dueDate'; if (d[end] < d.date) d[end] = d.date;
   const list = isQ ? S.quotes : S.invoices;
-  if (ED.isNew && !list.some(x => x.id === d.id) && !canAddDoc()) return proOpen('docs');
+  const ex = list.find(x => x.id === d.id), adds = ED.isNew ? !ex : !!(ex && ex.demo); // editing an example makes it a real document
+  if (adds && !canAddDoc()) return proOpen('docs');
+  if (adds || (ex && ex.clientId !== d.clientId)) { const cl = findC(d.clientId); if (cl && cl.demo && !usedByReal(d.id).has(cl.id) && !canAddClient()) return proOpen('clients'); }
+  d.demo = false;
   if (ED.isNew) { const n = nextNumber(ED.kind); d.number = n.num; if (isQ) S.settings.qNext = n.next; else S.settings.iNext = n.next; list.push(d); } else { const ix = list.findIndex(x => x.id === d.id); if (ix < 0) list.push(d); else list[ix] = d; }
   if (!persist(t('saved'))) return;
-  ED = null; go(`#/${isQ ? 'quotes' : 'invoices'}/${d.id}`);
+  const wasNew = ED.isNew, to = `#/${isQ ? 'quotes' : 'invoices'}/${d.id}`; ED = null;
+  if (wasNew) { history.replaceState(null, '', to); render(); } else go(to); // Back must not reopen an empty editor
 }
 
 /* ---------- clients ---------- */
@@ -261,7 +265,7 @@ function render() {
     else if (a === 'new' || b === 'edit') { const id = a === 'new' ? null : a; if (!ED || ED.kind !== kind || (id ? ED.doc.id !== id || ED.isNew : !ED.isNew)) { if (!startEditor(kind, id, qs.get('c'))) { ED = null; return go('#/' + sec + (id ? '/' + id : '')); } } html = vEditor(); focus = true; }
     else { ED = null; html = a ? (kind === 'quote' ? vQuote(a) : vInvoice(a)) : vDocs(sec); }
   } else {
-    ED = null;
+    if (sec !== 'pro') ED = null; // keep the draft while the key is typed
     html = sec === 'clients' ? (a ? vClient(a) : vClients()) : sec === 'catalog' ? vCatalog() : sec === 'receivables' ? vReceivables() : sec === 'settings' ? vSettings() : sec === 'more' ? vMore() : sec === 'pro' ? vPro() : vHome();
     if (sec === 'pro') active = 'settings'; else if (!NAV.includes(sec) && sec !== 'more') active = 'home';
   }
@@ -308,7 +312,7 @@ function demoLoad() {
   mkI(1, 6, 9, [L(1, 4)], [[100, 2]], null);
   persist(); render();
 }
-function demoRemove() { const used = new Set([...S.quotes, ...S.invoices].filter(d => !d.demo).map(d => d.clientId)); S.clients.forEach(c => { if (used.has(c.id)) c.demo = false; }); for (const k of ['clients', 'items', 'quotes', 'invoices']) S[k] = S[k].filter(x => !x.demo); S.quotes.forEach(q => { if (q.invoiceId && !findI(q.invoiceId)) q.invoiceId = ''; }); closeModal(); persist(t('deleted')); render(); }
+function demoRemove() { const used = new Set([...S.quotes, ...S.invoices].filter(d => !d.demo).map(d => d.clientId)); S.clients.forEach(c => { if (used.has(c.id)) c.demo = false; }); for (const k of ['clients', 'items', 'quotes', 'invoices']) S[k] = S[k].filter(x => !x.demo); S.quotes.forEach(q => { if (q.invoiceId && !findI(q.invoiceId)) q.invoiceId = ''; }); S.invoices.forEach(i => { if (i.quoteId && !findQ(i.quoteId)) i.quoteId = ''; }); closeModal(); persist(t('deleted')); render(); }
 
 /* ---------- actions ---------- */
 const ACT = {
@@ -364,7 +368,7 @@ const ACT = {
   exportData() { download(new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' }), 'clavuno-' + today() + '.json'); },
   askWipe() { confirmBox(t('wipeConfirm'), t('wipe'), 'doWipe', true); },
   doWipe() { try { localStorage.removeItem(LS_KEY); } catch (e) { /* ignore */ } const lic = S.plan.license; S = defaults(); if (lic) { S.plan.license = lic; save(); } UI.fq = UI.fi = 'all'; UI.search = ''; closeModal(); location.hash = '#/'; render(); },
-  doImport() { if (!ACT._pending) return; S = ACT._pending; ACT._pending = null; for (const k in _nf) delete _nf[k]; closeModal(); persist(t('imported')); render(); checkLicense().then(render); }
+  doImport() { if (!ACT._pending) return; const keep = licensed() ? S.plan.license : null; S = ACT._pending; ACT._pending = null; for (const k in _nf) delete _nf[k]; closeModal(); persist(t('imported')); render(); checkLicense().then(ok => { if (!ok && keep && !S.plan.license) { S.plan.license = keep; save(); } render(); }); } // a backup never takes Pro away from this device
 };
 const FORMS = {
   welcome(f, ev) {
@@ -375,7 +379,7 @@ const FORMS = {
   client(f) {
     const name = f.name.value.trim(); if (!name) return toast(t('needName'), 'err');
     const data = { name: sStr(name, 80), company: sStr(f.company.value.trim(), 80), phone: sStr(f.phone.value.trim(), 30), email: sStr(f.email.value.trim(), 80), taxId: sStr(f.taxId.value.trim(), 40), address: sStr(f.address.value.trim(), 200), notes: sStr(f.notes.value.trim(), 1000) };
-    let c = f.id.value && findC(f.id.value); if (!c && !canAddClient()) return proOpen('clients'); if (c) Object.assign(c, data); else { c = Object.assign({ id: uid(), created: today(), demo: false }, data); S.clients.push(c); }
+    let c = f.id.value && findC(f.id.value); if ((!c || (c.demo && !usedByReal().has(c.id))) && !canAddClient()) return proOpen('clients'); if (c) Object.assign(c, data, { demo: false }); else { c = Object.assign({ id: uid(), created: today(), demo: false }, data); S.clients.push(c); }
     const from = f.from.value; closeModal(); if (!persist(t('saved'))) return; if (from === 'editor' && ED) { ED.doc.clientId = c.id; } render();
   },
   item(f) { const name = f.name.value.trim(); if (!name) return toast(t('needName'), 'err'); const data = { name: sStr(name, 160), desc: sStr(f.desc.value.trim(), 500), price: sNum(f.price.value, 0, 1e11, 0), unit: sStr(f.unit.value.trim(), 20), taxable: f.taxable.checked }; const i = f.id.value && S.items.find(x => x.id === f.id.value); if (i) Object.assign(i, data); else S.items.push(Object.assign({ id: uid(), demo: false }, data)); closeModal(); persist(t('saved')); render(); },
@@ -383,7 +387,7 @@ const FORMS = {
   async license(f) {
     let key = null; try { key = await licVerify(f.key.value); } catch (e) { /* no crypto on this page */ }
     if (!key) return toast(t('licBad'), 'err');
-    S.plan.license = key; if (persist(t('licOk'))) render();
+    S.plan.license = key; if (!persist(t('licOk'))) return; if (ED) go('#/' + (ED.kind === 'quote' ? 'quotes' : 'invoices') + (ED.isNew ? '/new' : '/' + ED.doc.id + '/edit')); else render();
   },
   doc() { saveDoc(); }
 };
@@ -421,7 +425,7 @@ document.addEventListener('change', ev => {
   if (el.dataset.in === 'logo') { const file = el.files && el.files[0]; if (!file) return; if (!/^image\/(png|jpeg|webp)$/.test(file.type)) return toast(t('logoErr'), 'err'); const url = URL.createObjectURL(file), im = new Image(); im.onload = () => { const k = Math.min(1, 480 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(im.width * k)); c.height = Math.max(1, Math.round(im.height * k)); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url); const data = sLogo(c.toDataURL('image/png')); if (!data) return toast(t('logoErr'), 'err'); s.biz.logo = data; persist(t('saved')); render(); }; im.onerror = () => { URL.revokeObjectURL(url); toast(t('logoErr'), 'err'); }; im.src = url; return; }
   if (el.dataset.in === 'import') { const file = el.files && el.files[0]; if (!file) return; if (file.size > 20e6) return toast(t('importErr'), 'err'); file.text().then(txt => { const d = JSON.parse(txt); if (!d || typeof d !== 'object' || typeof d.settings !== 'object' || !Array.isArray(d.clients) || !Array.isArray(d.quotes)) throw new Error('shape'); const n = sanitize(d); n.settings.onboarded = true; if (!n.settings.lang) n.settings.lang = lang(); ACT._pending = n; confirmBox(t('importWarn'), t('importData'), 'doImport', true); }).catch(() => toast(t('importErr'), 'err')); el.value = ''; }
 });
-window.addEventListener('storage', ev => { if (ev.key !== LS_KEY) return; S = loadState(); for (const k in _nf) delete _nf[k]; checkLicense().then(() => { if (!ED && $('#modal').hidden) render(); }); }); // another tab changed the data
+window.addEventListener('storage', ev => { if (ev.key !== LS_KEY) return; const was = licensed(); S = loadState(); for (const k in _nf) delete _nf[k]; checkLicense().then(() => { if (ED) return; if (was !== licensed()) closeModal(); if ($('#modal').hidden) render(); }); }); // another tab changed the data
 window.addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); installEvt = ev; if (S.settings.onboarded ? !ED && $('#modal').hidden : !document.activeElement || document.activeElement.tagName !== 'INPUT') render(); });
 window.addEventListener('appinstalled', () => { installEvt = null; if (S.settings.onboarded) render(); });
 

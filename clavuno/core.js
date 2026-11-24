@@ -37,7 +37,9 @@ const LIC_HASHES = new Set('00c6a6c648fad3de087d03141c4674568a38d9db032339355577
 const LIC_OK = new Set(); // keys already verified in this session
 // Accepts the key with or without dashes, in lower case, and with O/I/L typed by mistake (Crockford base32)
 function licNorm(raw) {
-  let s = String(raw == null ? '' : raw).toUpperCase().replace(/[^0-9A-Z]/g, '');
+  raw = String(raw == null ? '' : raw);
+  const m = /CLAVUN[O0][\s\-–—._:]*((?:[0-9A-Z][\s\-–—._]*){16})(?![0-9A-Z])/i.exec(raw); if (m) raw = m[1]; // pasted with text around it
+  let s = raw.toUpperCase().replace(/[^0-9A-Z]/g, '');
   if (s.length === 23 && s.startsWith('CLAVUNO')) s = s.slice(7);
   s = s.replace(/O/g, '0').replace(/[IL]/g, '1');
   if (!/^[0-9A-HJKMNP-TV-Z]{16}$/.test(s)) return null;
@@ -131,8 +133,9 @@ function fmtNum(n) { try { return new Intl.NumberFormat(locale(), { maximumFract
 /* ---------- plan ---------- */
 const gated = () => !!CFG.CHECKOUT_URL;                       // limits apply only once there is somewhere to buy Pro
 const licensed = () => !!S.plan.license && LIC_OK.has(S.plan.license);
-const realClients = () => S.clients.filter(c => !c.demo).length;
-const realDocs = () => S.quotes.filter(q => !q.demo).length + S.invoices.filter(i => !i.demo && !i.quoteId).length; // an invoice made from a quote is the same job
+const usedByReal = skip => new Set([...S.quotes, ...S.invoices].filter(d => !d.demo && d.id !== skip).map(d => d.clientId));
+const realClients = () => { const u = usedByReal(); return S.clients.filter(c => !c.demo || u.has(c.id)).length; }; // a demo client with real work counts
+const realDocs = () => S.quotes.filter(q => !q.demo).length + S.invoices.filter(i => !i.demo && !(i.quoteId && S.quotes.some(q => q.id === i.quoteId && !q.demo))).length; // an invoice made from a quote is the same job
 const canAddClient = () => !gated() || licensed() || realClients() < CFG.FREE_CLIENTS;
 const canAddDoc = () => !gated() || licensed() || realDocs() < CFG.FREE_DOCS;
 // Checks the stored key against the list. An unknown key is removed; if the check itself cannot run, the key is kept.
