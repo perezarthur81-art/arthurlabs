@@ -1,10 +1,12 @@
 {
+  "id": "./",
   "name": "Clavuno",
   "short_name": "Clavuno",
   "description": "Quotes, invoices and payments from your phone.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#0C131D",
   "theme_color": "#0B6E8A",
   "categories": ["business", "finance", "productivity"],
