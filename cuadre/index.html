@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<title>Cuadre Préstamos</title>
+<meta name="description" content="Cuadre Préstamos: controla tus préstamos, cuotas y cobros desde el teléfono. Loans, installments and collections from your phone.">
+<meta name="theme-color" content="#14213D">
+<meta name="referrer" content="no-referrer">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-180.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cuadre">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta property="og:title" content="Cuadre Préstamos">
+<meta property="og:description" content="Tus préstamos, cuotas y cobros al día, desde el teléfono.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://arthurlabs.app/cuadre/">
+<meta property="og:image" content="https://arthurlabs.app/cuadre/icons/icon-512.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <aside id="side"></aside>
+  <main id="view" tabindex="-1"></main>
+  <nav id="tabs" aria-label="Cuadre"></nav>
+</div>
+<div id="modal" hidden></div>
+<div id="toasts" aria-live="polite"></div>
+<noscript>Cuadre necesita JavaScript. / Cuadre needs JavaScript.</noscript>
+<script src="i18n.js" defer></script>
+<script src="config.js" defer></script>
+<script src="engine.js" defer></script>
+<script src="core.js" defer></script>
+<script src="pdf.js" defer></script>
+<script src="app.js" defer></script>
+<script src="actions.js" defer></script>
+</body>
+</html>
