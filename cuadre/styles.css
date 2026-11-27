@@ -291,3 +291,7 @@ progress::-moz-progress-bar{background:var(--accent);border-radius:99px}
 
 .preview .warnp{margin:0;color:#FFD98A;font-weight:600;font-size:.86rem}
 .banner b{font-weight:800}
+
+/* help & legal links */
+.legal-links a{text-decoration:underline;text-underline-offset:3px}
+.legal-links{margin-top:12px}

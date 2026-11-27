@@ -1,0 +1,282 @@
+{
+  "lang": "pt",
+  "locale": "pt_BR",
+  "ui": {
+    "skip": "Pular para o conteúdo",
+    "home": "Início",
+    "apps": "Apps",
+    "updatedLabel": "Última atualização",
+    "updated": "27 de novembro de 2026",
+    "toc": "Conteúdo",
+    "langLabel": "Idioma",
+    "footPrivacy": "Privacidade",
+    "footTerms": "Termos",
+    "footRefunds": "Reembolsos",
+    "footSupport": "Suporte",
+    "footLegalNav": "Informações legais",
+    "footMade": "Feito na República Dominicana, para o mundo.",
+    "footContact": "Contato",
+    "backTop": "Voltar ao topo",
+    "openApp": "Abrir"
+  },
+  "pages": {
+    "privacy": {
+      "title": "Política de privacidade",
+      "desc": "Como os apps da Arthur Labs (Norte, Cuadre Préstamos e Clavuno) tratam seus dados: o que você salva fica no seu dispositivo. Sem contas, sem cookies, sem analytics e sem anúncios.",
+      "intro": "Escrita em linguagem simples. Explica quais dados existem quando você usa nossos apps, onde eles ficam salvos e o que recebemos se você comprar uma versão Pro.",
+      "sections": [
+        {
+          "id": "resumen",
+          "h": "Em poucas palavras",
+          "html": "<ul class=\"key\"><li>O que você escreve nos nossos apps fica salvo só no seu dispositivo. A Arthur Labs não recebe esses dados nem pode vê-los.</li><li>Não há contas de usuário nem senhas, e não pedimos para conectar seu banco.</li><li>Não usamos cookies, analytics, anúncios nem rastreadores, e os apps não enviam seus dados a terceiros.</li><li>Se você comprar o Pro, a Hotmart nos informa seu nome, seu e-mail e o status da sua compra. Nunca os dados do seu cartão.</li><li>Não vendemos dados pessoais.</li></ul>"
+        },
+        {
+          "id": "responsable",
+          "h": "Quem responde por esta política",
+          "html": "<p>Arthur Labs é um nome comercial registrado na República Dominicana, com sede em Santo Domingo. Seu titular é o responsável pelo tratamento dos dados descritos aqui. Neste texto, «nós» é a Arthur Labs.</p><p>Esta política se aplica ao site arthurlabs.app e aos nossos apps: {app:norte|Norte} (finanças pessoais), {app:cuadre|Cuadre Préstamos} (empréstimos, parcelas e cobranças) e {app:clavuno|Clavuno} (orçamentos, faturas e cobranças). O Norte também tem sua própria {app:norteprivacy|política de privacidade}, com as mesmas regras explicadas para esse app.</p>"
+        },
+        {
+          "id": "datos-app",
+          "h": "Os dados que você salva nos apps",
+          "html": "<p>Tudo o que você escreve em um app fica salvo no armazenamento do navegador do seu próprio dispositivo. Por exemplo:</p><ul><li><strong>Norte:</strong> receitas, gastos, orçamentos, metas, dívidas, grupos de poupança (caixinha) e empréstimos pessoais.</li><li><strong>Cuadre Préstamos:</strong> os empréstimos, as parcelas, os pagamentos e os recibos, e os dados dos seus clientes que você decidir anotar: nome, telefone, documento de identidade, endereço, referência ou fiador e observações.</li><li><strong>Clavuno:</strong> os dados do seu negócio e seu logo, seu catálogo, os orçamentos, as faturas e as cobranças, e os dados dos seus clientes: nome, identificação fiscal, telefone, e-mail e endereço.</li></ul><p>Também ficam salvas suas preferências, como o idioma, a moeda e o tema.</p><p>Esses dados não são enviados à Arthur Labs. Não temos uma cópia, não podemos vê-los e não podemos recuperá-los para você.</p><p>A proteção deles depende do seu dispositivo: qualquer pessoa que consiga desbloqueá-lo e abrir seu navegador pode ver o que você salvou. Recomendamos usar o bloqueio de tela e, no Cuadre, o PIN do app.</p>"
+        },
+        {
+          "id": "clientes",
+          "h": "Dados dos seus próprios clientes",
+          "html": "<p>No Cuadre e no Clavuno você pode salvar dados de outras pessoas: seus clientes e, no Cuadre, também a pessoa que você anotar como referência ou fiador. Esses dados ficam no seu dispositivo e nós não os recebemos.</p><p>Você decide quais dados salva e como os usa. Anote só os que precisar, tenha um motivo legítimo para mantê-los, use-os apenas para o seu negócio e cumpra as leis de proteção de dados do seu país.</p>"
+        },
+        {
+          "id": "dispositivo",
+          "h": "Funções que seu dispositivo usa",
+          "html": "<ul><li><strong>PDF e recibos.</strong> São criados dentro do seu dispositivo, sem serem enviados a nenhum servidor.</li><li><strong>Compartilhar.</strong> Quando você envia um recibo, um orçamento ou um lembrete pelo WhatsApp ou por outro app, a mensagem sai por esse app e segue as condições dele.</li><li><strong>Notificações.</strong> Os lembretes do Clavuno são gerados pelo seu dispositivo. Só aparecem se você der permissão, e você pode desativá-los quando quiser.</li><li><strong>Voz.</strong> Se você ditar um lançamento no Norte, o reconhecimento de voz é feito pelo seu dispositivo ou pelo fornecedor do seu navegador (por exemplo, Google ou Apple), não pela Arthur Labs.</li></ul>"
+        },
+        {
+          "id": "compra",
+          "h": "O que recebemos quando você compra o Pro",
+          "html": "<p>As compras são feitas pela Hotmart, que cobra e processa o pagamento. Da Hotmart recebemos:</p><ul><li>seu nome,</li><li>seu e-mail,</li><li>o produto que você comprou e o status da compra (por exemplo, aprovada ou reembolsada).</li></ul><p>Nunca recebemos os dados do seu cartão nem do seu meio de pagamento.</p><p>Usamos esses dados para enviar sua chave de ativação, atender suas dúvidas e gerenciar reembolsos. Fazemos isso porque é necessário para cumprir a compra que você fez e nossas obrigações legais. Nós os guardamos enquanto você tiver a licença e pelo tempo que as leis fiscais e contábeis exigirem. Não os vendemos nem os usamos para publicidade.</p><p>O que a Hotmart faz com seus dados é regido pela política de privacidade da Hotmart.</p>"
+        },
+        {
+          "id": "clave",
+          "h": "Sua chave de licença",
+          "html": "<p>A chave do Pro é verificada dentro do app, no seu dispositivo. Ativá-la não envia nenhum dado à Arthur Labs nem a terceiros.</p>"
+        },
+        {
+          "id": "cookies",
+          "h": "Cookies, analytics e terceiros",
+          "html": "<p>Não usamos cookies, ferramentas de analytics, anúncios nem rastreadores. Os apps não fazem solicitações a serviços de terceiros: as fontes e os demais arquivos são servidos a partir do nosso próprio domínio.</p><p>O site salva no seu navegador uma única preferência, o idioma que você escolheu, para mostrar as páginas nesse idioma. Não é um cookie e não é enviado a nenhum servidor.</p><p>O site e os apps são hospedados no GitHub Pages (GitHub, Inc.). Como acontece com qualquer site, esse serviço pode registrar dados técnicos da conexão, como o endereço IP e a data, para funcionar e se proteger. Não usamos esses registros para identificar você nem para acompanhar o que você faz.</p>"
+        },
+        {
+          "id": "correo",
+          "h": "Quando você nos escreve",
+          "html": "<p>Se você nos escrever para {email}, usamos seu endereço e sua mensagem apenas para responder e resolver sua dúvida, porque temos um interesse legítimo em atender você. Guardamos a conversa por até dois anos depois da sua última mensagem, para dar continuidade se você voltar a escrever.</p>"
+        },
+        {
+          "id": "copias",
+          "h": "Cópias de segurança",
+          "html": "<p>Cada app permite baixar um arquivo de cópia de segurança e restaurá-lo depois, no mesmo dispositivo ou em outro. Esse arquivo contém seus dados: guarde-o em um lugar seguro e trate-o como um documento privado.</p><p>No Cuadre e no Clavuno a cópia não inclui sua chave de licença: se você trocar de dispositivo, coloque-a de novo. No Norte a cópia inclui a chave e ativa o Pro ao ser restaurada, então não compartilhe esse arquivo com ninguém.</p><p>Fazer cópias é responsabilidade sua. Se você apagar os dados do navegador, desinstalar o app ou perder o dispositivo sem ter uma cópia, seus dados se perdem e não podemos recuperá-los.</p>"
+        },
+        {
+          "id": "derechos",
+          "h": "Seus direitos",
+          "html": "<p>Os dados dos apps estão nas suas mãos: você pode vê-los, corrigi-los, exportá-los e apagá-los quando quiser, pelo próprio app ou apagando os dados do navegador.</p><p>Sobre os dados da sua compra e das suas mensagens, você pode nos pedir acesso a eles, sua correção ou sua eliminação quando não forem mais necessários, uma cópia em um formato de uso comum, e se opor a um uso específico. Respeitamos os direitos que as leis de proteção de dados aplicáveis a você reconhecem, como a Lei 172-13 da República Dominicana, o GDPR (RGPD) se você mora na União Europeia ou a LGPD se você mora no Brasil. Para exercê-los, escreva para {email} a partir do e-mail com que você comprou. Você também pode apresentar uma reclamação à autoridade de proteção de dados do seu país.</p>"
+        },
+        {
+          "id": "transferencias",
+          "h": "Onde os dados são tratados",
+          "html": "<p>A Hotmart, o GitHub e nosso provedor de e-mail podem tratar dados em países diferentes do seu, com suas próprias medidas de proteção. Nós só usamos esses serviços para o que está explicado nesta política.</p>"
+        },
+        {
+          "id": "menores",
+          "h": "Menores de idade",
+          "html": "<p>Nossos apps são ferramentas para adultos e negócios. Não são direcionados a menores de 18 anos e não coletamos intencionalmente dados de menores.</p>"
+        },
+        {
+          "id": "cambios",
+          "h": "Mudanças nesta política",
+          "html": "<p>Se esta política mudar, publicaremos aqui a nova versão com a data. Se no futuro um app incorporar uma função que envie dados para fora do seu dispositivo, vamos explicá-la nesta página antes que ela esteja disponível.</p>"
+        },
+        {
+          "id": "idioma",
+          "h": "Idioma",
+          "html": "<p>Esta política está disponível em espanhol, inglês, francês e português. Se houver alguma diferença entre as versões, prevalece a versão em espanhol.</p>"
+        },
+        {
+          "id": "contacto",
+          "h": "Contato",
+          "html": "<p>Arthur Labs · Santo Domingo, República Dominicana · {email}</p>"
+        }
+      ]
+    },
+    "terms": {
+      "title": "Termos de uso",
+      "desc": "Termos de uso dos apps da Arthur Labs (Norte, Cuadre Préstamos e Clavuno): planos, licença Pro de pagamento único, uso responsável e limites de responsabilidade.",
+      "intro": "Estas condições explicam como você pode usar nossos apps e o que sua compra inclui. Ao usar um app ou comprar o Pro, você as aceita.",
+      "sections": [
+        {
+          "id": "alcance",
+          "h": "A que se aplicam",
+          "html": "<p>Estes termos se aplicam ao site arthurlabs.app e aos apps da Arthur Labs: {app:norte|Norte}, {app:cuadre|Cuadre Préstamos} e {app:clavuno|Clavuno}. Arthur Labs é um nome comercial registrado na República Dominicana. O Norte também tem seus próprios {app:norteterms|termos}; no que forem mais específicos para o Norte, eles prevalecem.</p>"
+        },
+        {
+          "id": "planes",
+          "h": "Planos e preço",
+          "html": "<p><strong>Grátis.</strong> Você pode usar cada app sem pagar e sem informar um cartão. O plano grátis tem os limites mostrados dentro do app.</p><p><strong>Pro.</strong> É um pagamento único, não uma assinatura: não há cobranças recorrentes. O preço é o mostrado no app e na Hotmart no momento da compra. Sua licença Pro dessa versão do app não tem data de vencimento e inclui as atualizações que publicarmos para essa versão.</p><p><strong>Teste.</strong> O Norte permite testar o Pro grátis por 14 dias dentro do app, sem cartão. Ao terminar o teste você continua no plano grátis e nada é cobrado.</p>"
+        },
+        {
+          "id": "compra",
+          "h": "Compra e ativação",
+          "html": "<p>As compras são feitas pela Hotmart, que processa o pagamento e emite o comprovante da compra conforme suas próprias condições.</p><p>Depois de comprar, você recebe sua chave de ativação por e-mail, no endereço que informou na compra, em até 24 horas. Para ativá-la, abra o app, entre em Pro, cole a chave no campo «Chave de licença» e toque em «Ativar» (no Norte: «Settings → Plans → Activate license»). Você também pode colocá-la nos seus outros dispositivos.</p><p>A compra do Cuadre Préstamos inclui ainda o sistema em Excel, que é baixado pela Hotmart.</p>"
+        },
+        {
+          "id": "licencia",
+          "h": "Licença",
+          "html": "<p>Ao comprar o Pro, você recebe uma licença pessoal para usar a versão Pro desse app:</p><ul class=\"key\"><li>É para uma pessoa e seus próprios dispositivos.</li><li>Não é transferível: você não pode cedê-la nem passá-la a outra pessoa.</li><li>Você não pode revendê-la, alugá-la nem compartilhar ou publicar sua chave.</li></ul><p>Os apps, os arquivos de Excel, seu design, seu código e as marcas Arthur Labs, Norte, Cuadre e Clavuno pertencem à Arthur Labs. A licença permite que você os use; não dá direito a copiá-los, modificá-los, revendê-los nem redistribuí-los. Se você usar a licença contra estas condições, seu direito de usar o Pro termina.</p>"
+        },
+        {
+          "id": "uso",
+          "h": "Uso responsável",
+          "html": "<p>Use os apps de forma legal e honesta. Não é permitido:</p><ul><li>usá-los para enganar, fraudar, assediar ou ameaçar outras pessoas;</li><li>cobrar dívidas com métodos abusivos ou emprestar dinheiro em condições que a lei do seu país proíbe;</li><li>tentar burlar o sistema de licenças ou distribuir chaves;</li><li>copiar ou modificar o código dos apps para vendê-lo ou publicá-lo.</li></ul>"
+        },
+        {
+          "id": "datos",
+          "h": "Seus dados e suas cópias",
+          "html": "<p>O que você salva nos apps fica no seu dispositivo. Fazer e guardar cópias de segurança é responsabilidade sua. Se você apagar os dados do navegador, desinstalar o app ou perder o dispositivo sem uma cópia, seus dados se perdem e não podemos recuperá-los. A {link:privacy|política de privacidade} explica isso em detalhes.</p><p>Se você salvar dados dos seus clientes, é responsável por tratá-los de acordo com a lei.</p>"
+        },
+        {
+          "id": "asesoria",
+          "h": "O que os apps não são",
+          "html": "<ul><li><strong>Norte</strong> é uma ferramenta educativa para organizar seu dinheiro. Não é consultoria financeira, fiscal, jurídica nem de investimentos, e seus simuladores são ilustrativos.</li><li><strong>Cuadre Préstamos</strong> calcula parcelas, juros e multas por atraso com os dados e as regras que você configura. Não é consultoria jurídica nem financeira e não substitui um contrato. Você é responsável por garantir que seus empréstimos e suas cobranças cumpram as leis do seu país, incluindo as taxas máximas de juros.</li><li><strong>Clavuno</strong> gera orçamentos, faturas e recibos para o seu negócio com os impostos que você configura. Esses documentos não substituem os documentos fiscais exigidos pela autoridade tributária do seu país (por exemplo, os NCF ou e-CF da DGII na República Dominicana).</li></ul><p>Revise sempre os cálculos e os documentos antes de usá-los. Para decisões importantes, consulte um profissional.</p>"
+        },
+        {
+          "id": "reembolsos",
+          "h": "Reembolsos",
+          "html": "<p>Toda compra do Pro tem uma garantia de 15 dias. Quando uma compra é reembolsada, a licença deixa de ser válida e você perde o direito de usar o Pro; pode continuar no plano grátis. Os detalhes estão na {link:refunds|política de reembolsos}.</p>"
+        },
+        {
+          "id": "servicio",
+          "h": "Os apps como são",
+          "html": "<p>Trabalhamos para que os apps funcionem bem, mas eles são oferecidos «no estado em que se encontram». Não garantimos que estejam livres de erros nem que funcionem em todos os dispositivos e navegadores.</p><p>Podemos melhorar, mudar ou retirar funções. As funções Pro que você comprou para essa versão continuam incluídas na sua licença.</p>"
+        },
+        {
+          "id": "responsabilidad",
+          "h": "Limite de responsabilidade",
+          "html": "<p>Na medida em que a lei permitir, a Arthur Labs não responde por danos indiretos, pela perda de dados nem pelas perdas ou decisões econômicas decorrentes do uso dos apps. Em qualquer caso, nossa responsabilidade total perante você se limita ao valor que você pagou pela licença do app em questão.</p><p>Nada do que foi dito acima limita os direitos que a lei lhe reconhece como consumidor e que não podem ser excluídos.</p>"
+        },
+        {
+          "id": "cambios",
+          "h": "Mudanças nestes termos",
+          "html": "<p>Podemos atualizar estes termos. Publicaremos aqui a nova versão com a data. Se você continuar usando os apps depois de uma mudança, aceita a nova versão.</p>"
+        },
+        {
+          "id": "ley",
+          "h": "Lei aplicável",
+          "html": "<p>Estes termos são regidos pelas leis da República Dominicana. Qualquer disputa será submetida aos tribunais competentes da República Dominicana, sem prejuízo dos direitos irrenunciáveis que a lei do seu local de residência lhe reconheça.</p>"
+        },
+        {
+          "id": "idioma",
+          "h": "Idioma",
+          "html": "<p>Estes termos estão disponíveis em espanhol, inglês, francês e português. Se houver alguma diferença entre as versões, prevalece a versão em espanhol.</p>"
+        },
+        {
+          "id": "contacto",
+          "h": "Contato",
+          "html": "<p>Para qualquer dúvida sobre sua compra, sua chave ou estes termos, escreva para {email}.</p>"
+        }
+      ]
+    },
+    "refunds": {
+      "title": "Política de reembolsos",
+      "desc": "Garantia de 15 dias em todas as compras da Arthur Labs (Norte Pro, Cuadre Préstamos e Clavuno Pro): como pedir seu reembolso e o que acontece com sua licença.",
+      "intro": "Se um app não for para você, devolvemos seu dinheiro. Simples assim.",
+      "sections": [
+        {
+          "id": "garantia",
+          "h": "Garantia de 15 dias",
+          "html": "<p>Todas as nossas compras têm uma garantia de 15 dias a partir da data da compra: Norte Pro, Cuadre Préstamos (app e sistema em Excel) e Clavuno Pro. Dentro desse prazo, você pode pedir o reembolso total sem precisar explicar o motivo.</p>"
+        },
+        {
+          "id": "como",
+          "h": "Como pedir",
+          "html": "<ol><li><strong>Pela Hotmart:</strong> entre na sua conta da Hotmart com o e-mail da sua compra, abra a compra e use a opção de solicitar o reembolso.</li><li><strong>Ou escreva para nós:</strong> mande um e-mail para {email} com o e-mail da sua compra e o código da transação (começa com HP). Nós cuidamos do pedido para você.</li></ol>"
+        },
+        {
+          "id": "plazo",
+          "h": "Quando seu dinheiro chega",
+          "html": "<p>A Hotmart devolve o dinheiro para o mesmo meio de pagamento que você usou. O tempo para vê-lo depende do seu meio de pagamento e do seu banco; no cartão, pode levar uma ou duas faturas para aparecer.</p>"
+        },
+        {
+          "id": "licencia",
+          "h": "O que acontece com sua licença",
+          "html": "<p>Quando uma compra é reembolsada, a licença Pro correspondente deixa de ser válida e você perde o direito de usar o Pro. Você pode continuar usando o plano grátis, e seus dados não são apagados: continuam no seu dispositivo.</p><p>Se sua compra incluía arquivos (como o sistema em Excel do Cuadre), você deixa de ter licença para usá-los e deve apagar suas cópias.</p>"
+        },
+        {
+          "id": "despues",
+          "h": "Depois dos 15 dias",
+          "html": "<p>Passado o prazo de garantia, não fazemos reembolsos. Se houve uma cobrança duplicada ou um erro na cobrança, escreva para {email} e verificamos com a Hotmart.</p><p>Nada disso limita os direitos que a lei do seu país reconhece a você como consumidor.</p>"
+        },
+        {
+          "id": "contacto",
+          "h": "Dúvidas?",
+          "html": "<p>Escreva para {email}. Você também pode ver os {link:terms|termos de uso} e a página de {link:support|suporte}.</p>"
+        }
+      ]
+    },
+    "support": {
+      "title": "Suporte",
+      "desc": "Ajuda com Norte, Cuadre Préstamos e Clavuno: instalação, chave do Pro, cópias de segurança e reembolsos. Escreva para hola@arthurlabs.app.",
+      "intro": "Precisa de ajuda com um app, com sua chave ou com sua compra? Escreva para nós. Quem responde é uma pessoa, não um robô.",
+      "contactTitle": "Escreva para nós",
+      "contactBody": "Costumamos responder em 1 a 3 dias úteis, em espanhol, inglês, francês ou português.",
+      "contactBtn": "Enviar e-mail",
+      "mailSubject": "Ajuda com um app da Arthur Labs",
+      "appsTitle": "Nossos apps",
+      "apps": {
+        "norte": "Finanças pessoais",
+        "cuadre": "Empréstimos, parcelas e cobranças",
+        "clavuno": "Orçamentos, faturas e cobranças"
+      },
+      "faqTitle": "Perguntas frequentes",
+      "sections": [
+        {
+          "id": "incluir",
+          "h": "Para ajudar você mais rápido",
+          "html": "<p>Conte no seu e-mail:</p><ul><li>qual app você usa e em qual dispositivo e navegador (por exemplo, Android com Chrome ou iPhone com Safari);</li><li>o que aconteceu e o que você esperava que acontecesse, com uma captura de tela se puder;</li><li>se for sobre sua compra, o e-mail com que você comprou e o código da transação (começa com HP).</li></ul><p>Nunca nos mande senhas, dados de cartão nem seu arquivo de cópia de segurança. Nós nunca vamos pedir isso a você.</p>"
+        }
+      ],
+      "faq": [
+        {
+          "q": "Como instalo o app no meu celular?",
+          "a": "<p><strong>Android (Chrome):</strong> abra o link do app, toque no menu ⋮ e escolha «Instalar app» ou «Adicionar à tela inicial».</p><p><strong>iPhone (Safari):</strong> abra o link, toque no botão Compartilhar e escolha «Adicionar à Tela de Início».</p><p><strong>Computador (Chrome ou Edge):</strong> toque no ícone de instalar na barra de endereços.</p>"
+        },
+        {
+          "q": "Preciso de internet para usar?",
+          "a": "<p>Só na primeira vez que você abre. Depois funciona sem conexão, porque tudo fica salvo no seu dispositivo.</p>"
+        },
+        {
+          "q": "Comprei o Pro. Onde está minha chave?",
+          "a": "<p>Ela chega no e-mail que você informou na compra, em até 24 horas. Confira também as pastas de spam e promoções. Se não encontrar, escreva para nós com o e-mail da sua compra.</p>"
+        },
+        {
+          "q": "Como ativo o Pro?",
+          "a": "<p>Abra o app e entre em Pro. Cole sua chave no campo «Chave de licença» e toque em «Ativar». No Norte fica em «Settings → Plans → Activate license». Repita o passo nos seus outros dispositivos.</p>"
+        },
+        {
+          "q": "Meus dados ficam salvos na nuvem?",
+          "a": "<p>Não. Ficam salvos só no seu dispositivo e nós não podemos vê-los. Por isso é importante que você baixe cópias de segurança.</p>"
+        },
+        {
+          "q": "Como passo meus dados para outro celular?",
+          "a": "<p>No app antigo, entre em Ajustes e baixe a cópia de segurança. Envie esse arquivo para você mesmo (por e-mail ou pelo WhatsApp). No celular novo, abra o app, entre em Ajustes e restaure a cópia. No Cuadre e no Clavuno, coloque de novo sua chave do Pro; no Norte ela é ativada sozinha com a cópia.</p>"
+        },
+        {
+          "q": "Como peço um reembolso?",
+          "a": "<p>Você tem 15 dias de garantia. Pode pedir pela sua conta da Hotmart ou escrevendo para nós. Os detalhes estão na {link:refunds|política de reembolsos}.</p>"
+        },
+        {
+          "q": "Perdi minha chave ou mudei de e-mail.",
+          "a": "<p>Escreva para nós com o nome e o e-mail que você usou ao comprar e o código da transação, e ajudamos você a recuperá-la.</p>"
+        }
+      ]
+    }
+  }
+}

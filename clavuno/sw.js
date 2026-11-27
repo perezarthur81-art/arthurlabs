@@ -1,5 +1,5 @@
 /* Clavuno service worker: app shell cached for offline use, refreshed in the background. */
-const CACHE = 'clavuno-v8';
+const CACHE = 'clavuno-v9';
 const SHELL = ['./', 'index.html', 'styles.css', 'i18n.js', 'config.js', 'core.js', 'pdf.js', 'app.js', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-180.png', 'fonts/inter-latin.woff2', 'fonts/inter-latin-ext.woff2', 'fonts/bricolage-latin.woff2', 'fonts/bricolage-latin-ext.woff2'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('clavuno-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

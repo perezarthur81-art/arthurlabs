@@ -237,3 +237,7 @@ form{display:flex;flex-direction:column;gap:.75rem}
 .keytx{font-variant-numeric:tabular-nums;letter-spacing:.04em;overflow-wrap:anywhere}
 .sheet .banner{margin:0}
 #side a.btn{justify-content:center}
+
+/* help & legal links */
+.legal-links a{text-decoration:underline;text-underline-offset:3px}
+.legal-links{margin-top:12px}

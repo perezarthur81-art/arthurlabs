@@ -295,4 +295,6 @@ setInterval(dayTick, 20000);
 /* ---------- boot ---------- */
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) { try { navigator.serviceWorker.register('sw.js'); } catch (e) { /* ignore */ } }
 lastSec = location.hash.split('/')[1] || '';
+/* ask the browser to keep this app's data even when the device is low on space */
+try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) { /* ignore */ }
 { const boot = () => render(); checkLicense().then(boot, boot); }
