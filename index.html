@@ -94,11 +94,7 @@ h2{font-size:clamp(30px,4.4vw,46px);line-height:1.08;letter-spacing:-.025em;marg
 .sub{color:var(--muted);max-width:60ch}
 
 /* products */
-.prod{display:grid;grid-template-columns:1.25fr .75fr;gap:20px;margin-top:36px}
-@media (max-width:900px){.prod{grid-template-columns:1fr}}
 .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:28px;overflow:hidden}
-.feature{display:grid;grid-template-columns:1fr 210px;gap:24px;align-items:center}
-@media (max-width:600px){.feature{grid-template-columns:1fr}.feature .shot{max-width:220px;margin:0 auto}}
 .badge{display:inline-block;font:700 12px 'JetBrains Mono',monospace;letter-spacing:.12em;padding:5px 10px;border-radius:999px}
 .live{color:#07070D;background:var(--li)}
 .soon{color:var(--am);border:1.5px solid var(--am)}
@@ -109,7 +105,6 @@ h2{font-size:clamp(30px,4.4vw,46px);line-height:1.08;letter-spacing:-.025em;marg
 .card li::before{content:"";flex:0 0 8px;height:8px;margin-top:9px;border-radius:50%;background:var(--grad)}
 .shot{border-radius:28px;border:2px solid rgba(255,255,255,.8);box-shadow:0 0 0 6px #11121c,0 0 0 7px rgba(139,92,255,.6),0 24px 60px rgba(0,0,0,.55);overflow:hidden;aspect-ratio:9/19.5;background:#fff}
 .shot img{width:100%;height:100%;object-fit:cover;object-position:top}
-.stack{display:grid;gap:20px}
 .wa{display:flex;flex-direction:column;gap:8px;margin-top:18px}
 .wa div{max-width:85%;font-size:14px;padding:9px 13px;border-radius:14px;line-height:1.4}
 .wa .in{background:rgba(255,255,255,.08);border-top-left-radius:4px}
@@ -166,7 +161,7 @@ footer a{color:var(--muted)}
 <header>
   <div class="wrap bar">
     <a class="brand" href="#top" aria-label="Arthur Labs"><img src="logo.svg" alt="" width="32" height="32"><span>ARTHUR LABS</span></a>
-    <nav class="links" aria-label="Secciones">
+    <nav class="links" aria-label="Secciones" data-i18n-aria="ariaSections">
       <a href="#productos" data-i18n="navProducts">Productos</a>
       <a href="#como" data-i18n="navHow">Cómo trabajamos</a>
       <a href="#unete" data-i18n="navJoin">Trabaja con nosotros</a>
@@ -190,7 +185,7 @@ footer a{color:var(--muted)}
       <a class="btn pri" href="#productos" data-i18n="ctaProducts">Ver productos</a>
       <a class="btn" href="#unete" data-i18n="ctaJoin">Trabaja con nosotros</a>
     </div>
-    <div class="langs" aria-label="Idiomas">
+    <div class="langs" aria-label="Idiomas" data-i18n-aria="ariaLangs">
       <span style="border-color:var(--cy);color:var(--cy)">ESPAÑOL</span>
       <span style="border-color:var(--ma);color:var(--ma)">ENGLISH</span>
       <span style="border-color:var(--am);color:var(--am)">FRANÇAIS</span>
@@ -314,7 +309,7 @@ footer a{color:var(--muted)}
           <h2 data-i18n="joinTitle">Buscamos ingeniero o ingeniera full-stack.</h2>
           <p class="sub" data-i18n="joinDesc">Proyectos por hitos, trabajo remoto y productos con IA que llegan a personas en tres idiomas. Publicamos nuestras vacantes en Workana: busca «Arthur Labs».</p>
         </div>
-        <div class="tags" aria-label="Tecnologías">
+        <div class="tags" aria-label="Tecnologías" data-i18n-aria="ariaTech">
           <span>TypeScript</span><span>React</span><span>Node.js</span><span>Cloudflare Workers</span><span>PostgreSQL</span><span>WhatsApp Cloud API</span><span>Claude / OpenAI</span><span>GitHub</span>
         </div>
       </div>
@@ -327,7 +322,7 @@ footer a{color:var(--muted)}
     <a class="brand" href="#top" aria-label="Arthur Labs"><img src="logo.svg" alt="" width="28" height="28"><span>ARTHUR LABS</span></a>
     <span data-i18n="made">Hecho en República Dominicana, para el mundo.</span>
     <span><span data-i18n="contact">Contacto:</span> <a href="mailto:hola@arthurlabs.app">hola@arthurlabs.app</a></span>
-    <nav class="flinks" aria-label="Legal"><a href="privacidad/" data-legal="privacy" data-i18n="fPrivacy">Privacidad</a><a href="terminos/" data-legal="terms" data-i18n="fTerms">Términos</a><a href="reembolsos/" data-legal="refunds" data-i18n="fRefunds">Reembolsos</a><a href="soporte/" data-legal="support" data-i18n="fSupport">Soporte</a></nav>
+    <nav class="flinks" aria-label="Información legal" data-i18n-aria="ariaLegal"><a href="privacidad/" data-legal="privacy" data-i18n="fPrivacy">Privacidad</a><a href="terminos/" data-legal="terms" data-i18n="fTerms">Términos</a><a href="reembolsos/" data-legal="refunds" data-i18n="fRefunds">Reembolsos</a><a href="soporte/" data-legal="support" data-i18n="fSupport">Soporte</a></nav>
     <span>© 2026 Arthur Labs</span>
   </div>
 </footer>
@@ -347,7 +342,7 @@ footer a{color:var(--muted)}
       cuadre1:"Installments and late fees calculated for you",cuadre2:"Receipts and reminders on WhatsApp",cuadre3:"PIN lock, works offline",cuadre4:"Pro includes the Excel system",cuadreCta:"Try Cuadre free",
       clavunoDesc:"For contractors, workshops and small businesses: quote, invoice and get paid from your phone.",
       clavuno1:"PDF quotes and invoices, with your logo on Pro",clavuno2:"Accept a quote and it becomes an invoice",clavuno3:"Receivables and payment reminders",clavuno4:"6 languages and many currencies",clavunoCta:"Try Clavuno free",
-      fPrivacy:"Privacy",fTerms:"Terms",fRefunds:"Refunds",fSupport:"Support",soonBadge:"IN DEVELOPMENT",waTitle:"AI automation on WhatsApp",waDesc:"For businesses that lose customers because messages don’t get answered in time.",
+      fPrivacy:"Privacy",fTerms:"Terms",fRefunds:"Refunds",fSupport:"Support",ariaSections:"Sections",ariaLangs:"Languages",ariaTech:"Technologies",ariaLegal:"Legal information",soonBadge:"IN DEVELOPMENT",waTitle:"AI automation on WhatsApp",waDesc:"For businesses that lose customers because messages don’t get answered in time.",
       waOut:"Hi! A reminder of your appointment tomorrow at 10:00. Can you confirm?",waIn:"Yes, confirmed. Thanks!",nextBadge:"COMING SOON",moreTitle:"More products on the way",
       moreDesc:"Every product starts with a real problem and launches in three languages.",howEyebrow:"How we work",howTitle:"Three rules for every product.",
       p1t:"AI that actually helps",p1d:"We use artificial intelligence where it saves time or money, not as decoration.",p2t:"Privacy first",
@@ -370,7 +365,7 @@ footer a{color:var(--muted)}
       cuadre1:"Échéances et pénalités calculées automatiquement",cuadre2:"Reçus et rappels par WhatsApp",cuadre3:"Code PIN, fonctionne hors ligne",cuadre4:"Pro inclut le système Excel",cuadreCta:"Essayer Cuadre gratuitement",
       clavunoDesc:"Pour les artisans, ateliers et petites entreprises : devis, factures et encaissements depuis votre téléphone.",
       clavuno1:"Devis et factures PDF, avec votre logo en Pro",clavuno2:"Le devis accepté devient une facture",clavuno3:"Suivi des impayés et relances",clavuno4:"6 langues et plusieurs devises",clavunoCta:"Essayer Clavuno gratuitement",
-      fPrivacy:"Confidentialité",fTerms:"Conditions",fRefunds:"Remboursements",fSupport:"Assistance",soonBadge:"EN DÉVELOPPEMENT",waTitle:"Automatisation WhatsApp avec IA",waDesc:"Pour les entreprises qui perdent des clients faute de répondre à temps.",
+      fPrivacy:"Confidentialité",fTerms:"Conditions",fRefunds:"Remboursements",fSupport:"Assistance",ariaSections:"Sections",ariaLangs:"Langues",ariaTech:"Technologies",ariaLegal:"Informations légales",soonBadge:"EN DÉVELOPPEMENT",waTitle:"Automatisation WhatsApp avec IA",waDesc:"Pour les entreprises qui perdent des clients faute de répondre à temps.",
       waOut:"Bonjour ! Petit rappel de votre rendez-vous demain à 10 h. Vous confirmez ?",waIn:"Oui, je confirme. Merci !",nextBadge:"BIENTÔT",moreTitle:"D’autres produits arrivent",
       moreDesc:"Chaque produit part d’un vrai problème et sort en trois langues.",howEyebrow:"Notre méthode",howTitle:"Trois règles pour chaque produit.",
       p1t:"Une IA vraiment utile",p1d:"Nous utilisons l’intelligence artificielle là où elle fait gagner du temps ou de l’argent, pas pour décorer.",p2t:"La vie privée d’abord",
@@ -390,12 +385,14 @@ footer a{color:var(--muted)}
     fr:{privacy:"fr/confidentialite/",terms:"fr/conditions/",refunds:"fr/remboursements/",support:"fr/assistance/"}};
   document.querySelectorAll('[data-i18n]').forEach(function(e){ES[e.getAttribute('data-i18n')]=e.textContent});
   document.querySelectorAll('[data-i18n-html]').forEach(function(e){ES[e.getAttribute('data-i18n-html')]=e.innerHTML});
+  document.querySelectorAll('[data-i18n-aria]').forEach(function(e){ES[e.getAttribute('data-i18n-aria')]=e.getAttribute('aria-label')});
   T.es=ES;
   function apply(l){
     if(!T[l])l='es';var d=T[l];
     document.documentElement.lang=l;
     document.querySelectorAll('[data-i18n]').forEach(function(e){var k=e.getAttribute('data-i18n');if(d[k]!=null)e.textContent=d[k]});
     document.querySelectorAll('[data-i18n-html]').forEach(function(e){var k=e.getAttribute('data-i18n-html');if(d[k]!=null)e.innerHTML=d[k]});
+    document.querySelectorAll('[data-i18n-aria]').forEach(function(e){var k=e.getAttribute('data-i18n-aria');if(d[k]!=null)e.setAttribute('aria-label',d[k])});
     document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-lang')===l))});
     document.querySelectorAll('img[data-shot]').forEach(function(im){var k=im.getAttribute('data-shot'),n=NAMES[k];im.src='img/'+k+'-'+l+'.webp';im.alt=l==='en'?n+ALT.en:ALT[l]+n});
     document.querySelectorAll('a[data-legal]').forEach(function(a){a.href=LEGAL[l][a.getAttribute('data-legal')]});

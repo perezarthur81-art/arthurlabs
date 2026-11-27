@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /pro/
 
 Sitemap: https://arthurlabs.app/sitemap.xml

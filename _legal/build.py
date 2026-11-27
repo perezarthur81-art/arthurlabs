@@ -30,6 +30,7 @@ PAGES = ["privacy", "terms", "refunds", "support"]
 HOME_LANG = {"es": "es", "en": "en", "fr": "fr", "pt": "en"}
 NORTE_LANG = {"es": "es", "en": "en", "fr": "fr", "pt": "en"}
 APP_ICONS = {"norte": "/img/norte-icon.png", "cuadre": "/cuadre/icons/icon.svg", "clavuno": "/clavuno/icons/icon.svg"}
+NAV_LABEL = {"es": "Principal", "en": "Main", "fr": "Principal", "pt": "Principal"}
 APP_NAMES = {"norte": "Norte", "cuadre": "Cuadre Préstamos", "clavuno": "Clavuno"}
 
 
@@ -103,7 +104,7 @@ def head(lang: str, page: str, P: dict) -> str:
 def header(lang: str, page: str, U: dict) -> str:
     home = f"/?lang={HOME_LANG[lang]}"
     langs = "".join(
-        f'<a href="{path_of(l, page)}" hreflang="{l}" lang="{l}"' + (' aria-current="page"' if l == lang else "") + f' title="{LANG_NAMES[l]}">{l.upper()}</a>'
+        f'<a href="{path_of(l, page)}" hreflang="{l}" lang="{l}"' + (' aria-current="page"' if l == lang else "") + f' aria-label="{LANG_NAMES[l]}" title="{LANG_NAMES[l]}">{l.upper()}</a>'
         for l in LANGS
     )
     sup = path_of(lang, "support")
@@ -113,7 +114,7 @@ def header(lang: str, page: str, U: dict) -> str:
 <header class="top">
   <div class="wrap bar">
     <a class="brand" href="{home}" aria-label="Arthur Labs · {e(U["home"])}">{LOGO}<span>ARTHUR LABS</span></a>
-    <nav class="nav" aria-label="Arthur Labs">
+    <nav class="nav" aria-label="{NAV_LABEL[lang]}">
       <a href="{home}#productos">{e(U["apps"])}</a>
       <a href="{sup}"{' aria-current="page"' if page == "support" else ""}>{e(U["footSupport"])}</a>
     </nav>
